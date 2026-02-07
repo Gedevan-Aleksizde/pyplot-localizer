@@ -1,17 +1,15 @@
-#! /usr/bin/env python
-# -*- coding: utf-8 -*-
+#! /usr/bin/env python3
 
 import matplotlib
 from matplotlib import rcParams
-from .search import find_font
+
+from .core import update_mpl_fontfamily
+
+update_mpl_fontfamily()
 
 # PDF mode
-# PNG とかもこれでOK
-f = find_font()
-rcParams.update(matplotlib.rcParamsDefault)
-rcParams['font.family'] = f
-rcParams['pdf.fonttype'] = 42
-matplotlib.use('cairo')
+# PNG などのラスタ画像もこれでよい
+rcParams["pdf.fonttype"] = 42
+matplotlib.use("cairo")
 
-print('matplotlib-japreset Cairo mode')
-print(f'font: {f}')
+print("matplotlib-japreset Cairo mode")
