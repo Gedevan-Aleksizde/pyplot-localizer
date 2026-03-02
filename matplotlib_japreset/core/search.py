@@ -4,23 +4,25 @@ import platform
 import warnings
 from typing import Dict, List
 
-import matplotlib as mpl
+from matplotlib import font_manager
 
 from .typing import FontPreset
 
-fontstyle = "sans-serif"
-fm = mpl.font_manager.fontManager
-os_info = platform.uname()
-os_version = ""
-if os_info.system == "Windows":
-    if os_info.release in ["8", "10"]:
-        os_version = "win_gt7"
-    else:
-        os_version = "win_leq7"
-elif os_info.system == "Darwin":
-    os_version = "mac"
-elif os_info.system == "Linux":
-    os_version = "linux"
+
+def detect_os():
+    os_info = platform.uname()
+    os_version = ""
+    if os_info.system == "Windows":
+        if os_info.release in ["8", "10"]:
+            os_version = "win_gt7"
+        else:
+            os_version = "win_leq7"
+    elif os_info.system == "Darwin":
+        os_version = "mac"
+    elif os_info.system == "Linux":
+        os_version = "linux"
+    return os_version
+
 
 font_standard: Dict[str, FontPreset] = {
     "linux": {
@@ -45,7 +47,8 @@ font_standard: Dict[str, FontPreset] = {
             "Saznami Mincho",
             "Source Han Sans",
             "Noto Sans CJK JP",
-            "Haranoaji Gothic" "IPA ExGothic",
+            "Haranoaji Gothic",
+            "IPA ExGothic",
             "IPA PGothic",
             "IPA Gothic",
         ],
@@ -97,7 +100,7 @@ def detect_font_preset() -> FontPreset:
     """
     return a system-specific default font namepreset.
     """
-    fontset = font_standard.get(os_version, dict())
+    fontset = font_standard.get(detect_os(), {})
     if fontset == dict():
         warnings.warn("system name is not detected", stacklevel=2)
         fontset = font_standard["SHARED"]
@@ -110,6 +113,7 @@ def detect_font_preset() -> FontPreset:
 
 
 def get_top_matched_font_name(font_families: List[str]) -> str:
+    fm = font_manager.fontManager
     picked_font = ""
     for name in font_families:
         try:
