@@ -94,7 +94,7 @@ Package cairo was not found in the pkg-config search path.
 ```python
 import matplotlib.pyplot as plt
 
-from matplotlib_japreset import mplj_pdf
+from matplotlib_japreset import preset_pdf
 
 plt.plot()
 plt.title("ほげほげ")
