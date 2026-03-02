@@ -2,10 +2,13 @@
 
 import platform
 import warnings
+from typing import Dict, List
 
 import matplotlib as mpl
 
-fontstyle = "sans"
+from .typing import FontPreset
+
+fontstyle = "sans-serif"
 fm = mpl.font_manager.fontManager
 os_info = platform.uname()
 os_version = ""
@@ -19,40 +22,104 @@ elif os_info.system == "Darwin":
 elif os_info.system == "Linux":
     os_version = "linux"
 
-font_standard = {
+font_standard: Dict[str, FontPreset] = {
     "linux": {
-        "serif": "Noto Serif CJK JP",
-        "sans": "Noto Sans CJK JP",
-        "mono": "Noto Sans Mono CJK JP",
+        "serif": [
+            "Takao PMincho",
+            "VL PMincho",
+            "Ume P Micho",
+            "Ume Mincho",
+            "Saznami Gothic",
+            "Source Han Sans",
+            "Noto Serif CJK JP",
+            "Haranoaji Mincho",  # こんな名前?
+            "IPA ExMincho",
+            "IPA PMincho",
+            "IPA Mincho",
+        ],
+        "sans-serif": [
+            "Takao PGothic",
+            "VL PGothic",
+            "Ume P Gothic",
+            "Ume Gothic",
+            "Saznami Mincho",
+            "Source Han Sans",
+            "Noto Sans CJK JP",
+            "Haranoaji Gothic" "IPA ExGothic",
+            "IPA PGothic",
+            "IPA Gothic",
+        ],
+        "monospace": [
+            "Noto Sans Mono CJK JP",
+        ],
     },
-    "mac": {"serif": "AppleGothic", "sans": "AppleGothic", "mono": "AppleGothic"},
-    "win_gt7": {"serif": "MS Mincho", "sans": "MS Gothic", "mono": "MS Gothic"},
-    "win_leq7": {"serif": "MS Mincho", "sans": "MS Gothic", "mono": "MS Gothic"},
-    "fallback": {
-        "serif": "Noto Serif CJK JP",
-        "sans": "Noto Sans CJK JP",
-        "mono": "Noto Sans CJK JP",
+    "mac": {
+        "serif": ["Hiragino Mincho ProN", "YuMincho +36p Kana"],
+        "sans-serif": [
+            "Hiragino Sans",
+            "Hiragino Maru Gothic Pro",
+            "Tsukushi A Round Gothic",
+            "Tsukushi B Round Gothic",
+            "YuGothic",
+            "Osaka",
+            "AppleGothic",
+        ],
+        "monospace": ["Osaka"],
+    },
+    "win_gt7": {
+        "serif": ["Yu Gothic", "BIZ UDPMincho", "MS PMincho"],
+        "sans-serif": ["Yu Gothic", "Meiryo", "BIZ UDPGothic", "MS PGothic"],
+        "monospace": ["MS Gothic"],
+    },
+    "win_leq7": {
+        "serif": ["MS Mincho"],
+        "sans-serif": ["MS Gothic"],
+        "monospace": ["MS Gothic"],
+    },
+    "SHARED": {
+        "serif": ["Noto Serif CJK JP"],
+        "sans-serif": ["Noto Sans CJK JP"],
+        "monospace": [
+            "mplus",
+            "Mgenplus",
+            "Ricty Discord",
+            "Ricty",
+            "Iosevka Term",
+            "Iosevka Fixed",
+            "Ricty Discord Diminished",
+            "Ricty Diminished",
+        ],
     },
 }
 
 
-def detect_default_font() -> str:
+def detect_font_preset() -> FontPreset:
     """
-    return a system-specific default font name.
+    return a system-specific default font namepreset.
     """
     fontset = font_standard.get(os_version, dict())
     if fontset == dict():
         warnings.warn("system name is not detected", stacklevel=2)
-        fontset = font_standard["fallback"]
-    font_name = fontset.get(fontstyle, "")
-    if font_name == "":
-        warnings.warn(f"font style `{fontstyle}` is not specified correctly.")
-        font_name = font_standard["fallback"]["sans"]
-    try:
-        fm.findfont(font_name, fallback_to_default=False)
-    finally:
-        if font_name == "" or font_name is None:
-            warnings.warn("The system-specific font is not identified.", stacklevel=2)
-        else:
-            print(f"identified font: {font_name}")
-    return font_name
+        fontset = font_standard["SHARED"]
+    else:
+        fontset = {
+            style: font_standard["SHARED"][style] + fontlist
+            for style, fontlist in fontset.items()
+        }
+    return fontset
+
+
+def get_top_matched_font_name(font_families: List[str]) -> str:
+    picked_font = ""
+    for name in font_families:
+        try:
+            font_path = fm.findfont(name, fallback_to_default=False)
+        except ValueError:
+            font_path = None
+        if font_path != "" and font_path is not None:
+            print(f"identified font: {name}")
+            picked_font = name
+            break
+    if picked_font == "":
+        warnings.warn("no available font!", stacklevel=2)
+    return picked_font
