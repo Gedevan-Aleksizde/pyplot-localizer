@@ -2,10 +2,11 @@
 
 import platform
 import warnings
-from typing import Dict, List
+from typing import List
 
 from matplotlib import font_manager
 
+from .fonts import FONTPRESETS
 from .typing import FontPreset
 
 
@@ -13,10 +14,19 @@ def detect_os():
     os_info = platform.uname()
     os_version = ""
     if os_info.system == "Windows":
-        if os_info.release in ["8", "10"]:
-            os_version = "win_gt7"
-        else:
+        if os_info.release in [
+            "2000",
+            "2003Server",
+            "post2003",
+            "XP",
+            "2008Serve",
+            "2008ServerR2",
+            "Vista",
+            "7",
+        ]:
             os_version = "win_leq7"
+        else:
+            os_version = "win_gt7"
     elif os_info.system == "Darwin":
         os_version = "mac"
     elif os_info.system == "Linux":
@@ -24,89 +34,17 @@ def detect_os():
     return os_version
 
 
-font_standard: Dict[str, FontPreset] = {
-    "linux": {
-        "serif": [
-            "Takao PMincho",
-            "VL PMincho",
-            "Ume P Micho",
-            "Ume Mincho",
-            "Saznami Gothic",
-            "Source Han Sans",
-            "Noto Serif CJK JP",
-            "Haranoaji Mincho",  # こんな名前?
-            "IPA ExMincho",
-            "IPA PMincho",
-            "IPA Mincho",
-        ],
-        "sans-serif": [
-            "Takao PGothic",
-            "VL PGothic",
-            "Ume P Gothic",
-            "Ume Gothic",
-            "Saznami Mincho",
-            "Source Han Sans",
-            "Noto Sans CJK JP",
-            "Haranoaji Gothic",
-            "IPA ExGothic",
-            "IPA PGothic",
-            "IPA Gothic",
-        ],
-        "monospace": [
-            "Noto Sans Mono CJK JP",
-        ],
-    },
-    "mac": {
-        "serif": ["Hiragino Mincho ProN", "YuMincho +36p Kana"],
-        "sans-serif": [
-            "Hiragino Sans",
-            "Hiragino Maru Gothic Pro",
-            "Tsukushi A Round Gothic",
-            "Tsukushi B Round Gothic",
-            "YuGothic",
-            "Osaka",
-            "AppleGothic",
-        ],
-        "monospace": ["Osaka"],
-    },
-    "win_gt7": {
-        "serif": ["Yu Gothic", "BIZ UDPMincho", "MS PMincho"],
-        "sans-serif": ["Yu Gothic", "Meiryo", "BIZ UDPGothic", "MS PGothic"],
-        "monospace": ["MS Gothic"],
-    },
-    "win_leq7": {
-        "serif": ["MS Mincho"],
-        "sans-serif": ["MS Gothic"],
-        "monospace": ["MS Gothic"],
-    },
-    "SHARED": {
-        "serif": ["Noto Serif CJK JP"],
-        "sans-serif": ["Noto Sans CJK JP"],
-        "monospace": [
-            "mplus",
-            "Mgenplus",
-            "Ricty Discord",
-            "Ricty",
-            "Iosevka Term",
-            "Iosevka Fixed",
-            "Ricty Discord Diminished",
-            "Ricty Diminished",
-        ],
-    },
-}
-
-
 def detect_font_preset() -> FontPreset:
     """
     return a system-specific default font namepreset.
     """
-    fontset = font_standard.get(detect_os(), {})
+    fontset = FONTPRESETS.get(detect_os(), {})
     if fontset == dict():
         warnings.warn("system name is not detected", stacklevel=2)
-        fontset = font_standard["SHARED"]
+        fontset = FONTPRESETS["SHARED"]
     else:
         fontset = {
-            style: font_standard["SHARED"][style] + fontlist
+            style: FONTPRESETS["SHARED"][style] + fontlist
             for style, fontlist in fontset.items()
         }
     return fontset
