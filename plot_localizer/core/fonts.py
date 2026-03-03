@@ -12,7 +12,7 @@ FONTPRESETS: Dict[str, FontPreset] = {
             "Saznami Gothic",
             "Source Han Sans",
             "Noto Serif CJK JP",
-            "Haranoaji Mincho",  # こんな名前?
+            "Haranoaji Mincho",
             "IPA ExMincho",
             "IPA PMincho",
             "IPA Mincho",
@@ -58,11 +58,10 @@ FONTPRESETS: Dict[str, FontPreset] = {
         "monospace": ["MS Gothic"],
     },
     "SHARED": {
-        "serif": ["Noto Serif CJK JP"],
-        "sans-serif": ["Noto Sans CJK JP"],
+        "serif": ["Noto Serif CJK JP", "Harano Aji Mincho"],
+        "sans-serif": ["Noto Sans CJK JP", "Harano Aji Gothic", "Mgen+ 2cp"],
         "monospace": [
-            "mplus",
-            "Mgenplus",
+            "M PLUS 1 Code",
             "Ricty Discord",
             "Ricty",
             "Iosevka Term",
