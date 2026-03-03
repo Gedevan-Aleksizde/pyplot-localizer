@@ -73,7 +73,7 @@ Package cairo was not found in the pkg-config search path.
 1. 最初にどれかを選んでインポートします
   + PDFモード: ラスタ画像 or フォント埋め込みPDF (**サブセット化なし**)
     ```python
-    from plot_localizer.loader import preset_pdf  # noqa: F401 pylint: disable=W0611
+    from plot_localizer.loader import preset_pdf
     ```
   + Cairoモード: ラスタ画像 or フォント埋め込みPDF (サブセット化)
     ```python
@@ -84,7 +84,8 @@ Package cairo was not found in the pkg-config search path.
     from plot_localizer.loader import preset_pgf
     ```
 2. 自動選択されたフォントが表示されます
-3. `matplotlib` 依存のグラフを作成します (cf. `plotnine`, `seaborn` でも有効)
+3. `matplotlib` 依存のグラフを作成します
+    * 例えば seaborn も対象です
 4. 変更したい場合は別のものを読み込み直します
     + 設定がデフォルトに一番近いのは PDF モードです. フォント名と埋め込み設定以外変えていません
 
