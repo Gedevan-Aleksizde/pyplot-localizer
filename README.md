@@ -1,4 +1,4 @@
-# matplotlib-japreset
+# plot-localizer
 
 `matplotlib` その他の Python グラフィクスパッケージで日本語を自由に表示し保存するための自動設定モジュール
 
@@ -44,14 +44,14 @@ sudo apt install fonts-noto
 ### uv を使用する場合 (推奨)
 
 ```sh
-uv add "matplotlib-japreset @ git+https://github.com/Gedevan-Aleksizde/matplotlib-japreset.git@master"
+uv add "plot-localizer @ git+https://github.com/Gedevan-Aleksizde/pyplot-localizer"
 ```
 
 
 ### pip を使用する場合 (非推奨)
 
 ```sh
-pip install -U git+https://github.com/Gedevan-Aleksizde/matplotlib-japreset.git@master
+pip install -U git+https://github.com/Gedevan-Aleksizde/pyplot-localizer
 ```
 
 使用時に以下のようなエラーが発生する場合は, 描画に必要なパッケージが不足しています.
