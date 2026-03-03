@@ -8,7 +8,7 @@ def use_preset_pdf() -> None:
     rcParams["pdf.fonttype"] = 42
     matplotlib.use("pdf")
 
-    print("matplotlib-japreset PDF mode")
+    print("plot-localizer PDF mode")
 
 
 def use_preset_cairo() -> None:
@@ -17,7 +17,7 @@ def use_preset_cairo() -> None:
     rcParams["pdf.fonttype"] = 42
     matplotlib.use("cairo")
 
-    print("matplotlib-japreset Cairo mode")
+    print("plot-localizer Cairo mode")
 
 
 def use_preset_pgf() -> None:
@@ -31,4 +31,4 @@ def use_preset_pgf() -> None:
         r"\usepackage{amsmath,amssymb,mathrsfs,cancel,esint,mathdots,mathtools}\usepackage{metalogo}"
     )
     matplotlib.use("pgf")
-    print("matplotlib-japreset PGF mode")
+    print("plot-localizer PGF mode")
