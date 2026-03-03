@@ -26,5 +26,9 @@ def update_mpl_fontfamily(
         rcParams[f"font.{style}"] = (
             font_preset.get(style, []) + rcParams[f"font.{style}"]
         )
+    for style in ["fantasy", "cursive"]:
+        rcParams[f"font.{style}"] = (
+            font_preset.get("sans-serif", []) + rcParams[f"font.{style}"]
+        )
     selected_font = get_top_matched_font_name(font_preset[font_style])
     return selected_font
