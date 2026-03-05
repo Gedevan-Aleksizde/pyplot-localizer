@@ -65,8 +65,30 @@ Package cairo was not found in the pkg-config search path.
 
 ## 使い方
 
+### 対応パッケージを読み込む場合
 
-### 一番簡単だが行儀の良くない方法
+現時点では matplptlib, seaborn, plotnine に対応しています.
+
+これらのパッケージを import する際に, モジュールの先頭に `plot_localizer.` を付けます. 例えば以下のようにしてください.
+
+```python
+import plot_localizer.matplotlib.pyplot as plt
+
+import plot_localizer.seaborn as sns
+
+import plot_localizer.plotnine as p9
+```
+
+後は通常のインポートと同様に, `plt.plot()` とか `sns.catplot` とかを呼び出せます.
+
+当然ながら, seaborn, plotnine はそれぞれパッケージ本体をインストールする必要があります.
+
+
+### フォント設定の変更だけをする場合
+
+matplotlib および, matplotlib をバックエンドとしているグラフィックスパッケージを日本語表示させたい場合は, この方法が有効かもしれません. または, 上記の方法を使わずに日本語フォントを設定したい場合にも使えます.
+
+#### 一番簡単だが行儀の良くない方法
 
 以下のいずれかをグラフを描く前に実行すれば, スクリプトの実行中やセッション中は, 設定が維持されます. ただし, 現時点では cairo, pgf の動作が不安定です. 特にこだわりがないなら, `preset_pdf` を使ってください. 
 
@@ -113,17 +135,43 @@ from plot_localizer.setter import set_graphics_as_pdf
 set_graphics_as_pdf()
 ```
 
+
+## 技術的な補足
+
+### トラブルシュート
+
+使用時に以下のようなエラーが発生する場合は, 描画に必要なパッケージが不足しています.
+
+```
+Package cairo was not found in the pkg-config search path.
+```
+
+外部ライブラリがインストールされていない場合もあります.
+
+Ubuntu や Linux 系ならば, 以下を試してください.
+
+```sh
+sudo apt install libcairo2-dev libjpeg-dev libgif-dev
+```
+
+Mac ならば, 以下を試してください. インストールには Homebrew も必要です.
+
+```sh
+brew install cairo
+brew install pkg-config
+```
+
 ### 永続的に変更する方法
 
 理論上は, matplotlibrc さえ変えてしまえば, plotnine を除いて, 毎回このパッケージで日本語フォントを設定する必要はありません. しかし, なぜか matplotlib は matplotlibrc をエクスポートする手段をサポートしていません. 自分で作ろうとしましたが複雑すぎて継続的にメンテできる自信がないので, 自動で matplotlibrc を上書きする機能は諦めました.
 
 
-## Seaborn の場合
+### Seaborn の場合
 
 Seaborn は matplotlib をバックエンドにしているので, `rcParams` の設定が反映されます. よって, matplotlib と同じ設定をしておけば日本語表示ができます. ただし, Seaborn を使うこと自体を私はおすすめしません.
 
 
-## Plotnine の場合
+### Plotnine の場合
 
 Plotnine は matplotlib をバックエンドにしていますが, デフォルトで `rcParams` の設定を上書きしてしまうため, `rcParams` の設定を変更しても日本語フォントを使用してくれません. 昔 pull request を出しましたが, 却下されました. そのため, Plotnine に対応する方法は依然としてやや複雑です. いくつかのクラスを再定義する必要がありました. `ggplot` と, `theme_*` 系のフォントを設定するオブジェクトは, Plotnine ではなくこのパッケージからインポートして使ってください. フォントは matplotlib の場合と同じ方法で決定されます.
 
@@ -138,7 +186,7 @@ p9jp.ggplot(data, p9.aes(...)) + p9.geom_line() + p9jp.theme_classic(base_size=1
 ```
 
 
-## カスタマイズ
+### カスタマイズ
 
 フォントを手動変更したい場合は, プリセット読み込み後に `rcParams` を上書きします
 
@@ -169,55 +217,32 @@ set_graphics_as_pdf("serif")
 他の方法では, スタイルを指定する引数が存在しません. 上記の関数では Plotnine にも効果がありません. これらの状況でスタイルを変更するには, Python 呼び出し時に `PYTHONFONTSTYLE` 環境変数に与えておけば, 読込時に対応するスタイルのフォントを選びます.
 
 
-## 補足
-
-### トラブルシュート
-
-使用時に以下のようなエラーが発生する場合は, 描画に必要なパッケージが不足しています.
-
-```
-Package cairo was not found in the pkg-config search path.
-```
-
-外部ライブラリがインストールされていない場合もあります.
-
-Ubuntu や Linux 系ならば, 以下を試してください.
-
-```sh
-sudo apt install libcairo2-dev libjpeg-dev libgif-dev
-```
-
-Mac ならば, 以下を試してください. インストールには Homebrew も必要です.
-
-```sh
-brew install cairo
-brew install pkg-config
-```
-
 ### 対応しているフォント
 
-以下のようなフォントがインストールされていれば, このパッケージによってグラフに使用されます. 逆に言えば, これら以外のフォントは日本語用であっても認識されません. グラフで使う意味が思いつかないため, Windows に入っているUI系フォントや非プロポーショナルフォントや等幅フォントなどのカーニングのおかしいフォントは認識しないことが多いです.
+主要なOSおよびLinuxディストリビューションで標準フォントとして採用されているものや, 広く普及している無料フォントを中心に採用しています. 以下のようなフォントがインストールされていれば, このパッケージによってグラフに使用されます. 逆に言えば, これら以外のフォントは日本語用であってもそのままでは認識されません. グラフで使う意味が思いつかないため, Windows に入っているUI系フォントや非プロポーショナルフォントや等幅フォントなどのカーニングのおかしいフォントは認識しないことが多いです.
 
-* sans-serif と serif 系
-    * Noto Sans CJK JP
-    * Noto Serif CJK JP
+* sans-serif と serif フォント
+    * Noto CJK JP
     * ヒラギノ系
     * BIZ UD系
     * メイリオ
     * 游書体
-    * Takao系
-    * VL系
+    * Takao
+    * VL
     * 梅書体
     * IPA系
     * MS系
-* 等幅フォント系
+        * MS*フォントのうち名前にUIとついているものは対象としていません.
+* 等幅フォント
     * Ricty系
-    * M+, Mgen+
+    * M+
+    * Mgen+ m
 
 
 **ただし, OpenType や `.ttc` 形式のフォントは指定しても動作しないことがあります.**
 
-## 注意事項
+
+## その他の細かい注意事項
 
 * Windows OSで新たにフォントをインストールして使用したい場合は, 全ユーザーが使えるようにインストールする必要があるかもしれません.
 * PDF は一番環境制約が少ないですが, 埋め込みフォントをサブセット化できません
@@ -231,7 +256,7 @@ brew install pkg-config
     + Plotnine の `theme_xkcd()` はたぶん日本語不可です
 
 
-## その他
+## 最後に
 
 * 追加してほしいフォント名あったら教えてください
   + 隷書とかポップ体とか変わったフォントはめんどくさいので対応しません
