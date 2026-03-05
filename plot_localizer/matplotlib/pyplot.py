@@ -10,4 +10,7 @@ if style not in get_args(FontStyles):
 _ = update_mpl_fontfamily(style)
 
 
+import matplotlib
 from matplotlib.pyplot import *
+
+__all__ = [*matplotlib.__all__]  # to enable static analysis

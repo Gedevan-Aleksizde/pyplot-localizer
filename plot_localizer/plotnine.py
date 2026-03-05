@@ -17,6 +17,8 @@ try:
     import plotnine
     from plotnine import *
 
+    __all__ = [*plotnine.__all__]  # to enable static analysis
+
     if Version(plotnine.__version__) < Version("0.15.3"):
         warnings.warn(
             f"Imported plotnine version is version {plotnine.__version__}, but this package requires >= 0.15.3."
