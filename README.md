@@ -191,7 +191,7 @@ p9jp.ggplot(data, p9.aes(...)) + p9.geom_line() + p9jp.theme_classic(base_size=1
 フォントを手動変更したい場合は, プリセット読み込み後に `rcParams` を上書きします
 
 ```python
-from plot_localizer import mplj_pdf  # noqa: F401 pylint: disable=W0611
+from plot_localizer import mplj_pdf
 from matplotlib import rcParams
 rcParams['font.family'] = 'FONT NAME'
 ```
