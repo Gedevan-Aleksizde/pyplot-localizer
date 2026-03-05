@@ -54,13 +54,14 @@ FONTPRESETS: Dict[str, FontPreset] = {
     },
     "win_leq7": {
         "serif": ["MS Mincho"],
-        "sans-serif": ["MS Gothic"],
+        "sans-serif": ["MS Gothic", "Meiryo"],
         "monospace": ["MS Gothic"],
     },
     "SHARED": {
         "serif": ["Noto Serif CJK JP", "Harano Aji Mincho"],
         "sans-serif": ["Noto Sans CJK JP", "Harano Aji Gothic", "Mgen+ 2cp"],
         "monospace": [
+            "Mgen+ 2m",
             "M PLUS 1 Code",
             "Ricty Discord",
             "Ricty",
