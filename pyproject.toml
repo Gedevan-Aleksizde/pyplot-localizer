@@ -3,7 +3,7 @@ name = "plot-localizer"
 authors=[
   {name='Katagiri, Satoshi', email='katagiri.stsh@gmail.com'}
 ]
-version = "0.9.0"
+version = "0.9.1"
 description = "Japanese font presets to enhance Python grapphic modules/Pythonグラフィックスモジュールの改善のための日本語ユーザー向けプリセット"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -13,3 +13,11 @@ dependencies = [
 
 [tool.uv.workspace]
 members = ["demo"]
+
+[dependency-groups]
+dev = [
+    "pandas>=3.0.1",
+    "plotnine>=0.15.3",
+    "scikit-misc>=0.5.2",
+    "seaborn>=0.13.2",
+]
