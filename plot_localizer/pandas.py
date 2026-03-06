@@ -14,15 +14,18 @@ _ = update_mpl_fontfamily(style)
 
 
 try:
-    from seaborn import *
-    from seaborn import __version__
+    import pandas
+    from pandas import *
+    from pandas import __version__
 
-    if Version(__version__) < Version("0.13.2"):
+    __all__ = [*pandas.__all__]  # to enable static analysis
+
+    if Version(__version__) < Version("2.0.0"):
         warnings.warn(
-            f"Imported seaborn version is version {__version__}, but plot_localizer requires >= 0.13.2."
+            f"Imported pandas version is version {__version__}, but this plot_localizer requires >= 2.0.0."
         )
 except ModuleNotFoundError:
     warnings.warn(
-        "failed to import seaborn. Please make sure seaborn is installed.",
+        "failed to import pandas. Please make sure seaborn is installed.",
         stacklevel=2,
     )

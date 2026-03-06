@@ -21,7 +21,7 @@ try:
 
     if Version(plotnine.__version__) < Version("0.15.3"):
         warnings.warn(
-            f"Imported plotnine version is version {plotnine.__version__}, but this package requires >= 0.15.3."
+            f"Imported plotnine version is version {plotnine.__version__}, but plot_localizer requires >= 0.15.3."
         )
 
     class ggplot(plotnine.ggplot):
