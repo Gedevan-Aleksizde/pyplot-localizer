@@ -96,6 +96,7 @@ import plot_localizer.pandas as pd
 
 matplotlib および, matplotlib をバックエンドとしているグラフィックスパッケージを日本語表示させたい場合は, この方法が有効かもしれません. または, 上記の方法を使わずに日本語フォントを設定したい場合にも使えます.
 
+
 #### 一番簡単だが行儀の良くない方法
 
 以下のいずれかをグラフを描く前に実行すれば, スクリプトの実行中やセッション中は, 設定が維持されます. ただし, 現時点では cairo, pgf の動作が不安定です. 特にこだわりがないなら, `preset_pdf` を使ってください. 
@@ -142,6 +143,24 @@ from plot_localizer.setter import set_graphics_as_pdf
 
 set_graphics_as_pdf()
 ```
+
+### デフォルトのフォントを変更したい場合
+
+上記の関数は引数にフォントを指定できます.
+
+```python
+from plot_localizer.setter import set_graphics_as_pdf
+
+
+set_graphics_as_pdf("Yu Mincho")
+```
+
+`set_graphics_as_*` 関数以外は, 引数がないのでこの方法ではフォントを指定できません. この関数を使わずにフォントを指定するには, `PYTHONFONT` 環境変数を使用します. `sans-serif`, `serif`, `monospace` の他に, 個別のフォントファミリ名を事前に指定できます. 例えば以下のようにすれば適用されます. もちろん, `.bash_profile` などに環境変数を指定しておくこともできます,
+
+```sh
+PYTHONFONT="Hiragino Mincho ProN" python hogehoge
+```
+
 
 ## トラブルシュート
 
