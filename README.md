@@ -73,7 +73,7 @@ Package cairo was not found in the pkg-config search path.
 
 ### 対応パッケージを読み込む場合
 
-現時点では matplptlib, seaborn, plotnine に対応しています.
+v0.9.2 時点では matplptlib, seaborn, plotnine, pandas に対応しています.
 
 これらのパッケージを import する際に, モジュールの先頭に `plot_localizer.` を付けます. 例えば以下のようにしてください.
 
@@ -83,6 +83,8 @@ import plot_localizer.matplotlib.pyplot as plt
 import plot_localizer.seaborn as sns
 
 import plot_localizer.plotnine as p9
+
+import plot_localizer.pandas as pd
 ```
 
 後は通常のインポートと同様に, `plt.plot()` とか `sns.catplot` とかを呼び出せます.
