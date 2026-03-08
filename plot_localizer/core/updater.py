@@ -13,7 +13,7 @@ from .typing import FontStyles
 
 def update_mpl_fontfamily(
     font_style: Optional[str] = None,
-    errors: Literal["ignore", "warn", "raise"] = "warn",
+    errors: Literal["ignore", "warn", "raise", "fallback"] = "warn",
 ) -> str:
     """
     change matplotlib font family to the operating system specific one.
@@ -32,20 +32,27 @@ def update_mpl_fontfamily(
         environ.get("PYTHONFONT", "sans-serif") if font_style is None else font_style
     )
     del font_style
-    if errors not in ["ignore", "warn", "raise"]:
+    if errors not in ["ignore", "warn", "raise", "fallback"]:
         warnings.warn(
-            f"argument `erros` should be one of `ignore`, `warn`, `raise`, but {errors} is specified.",
+            f"Argument `erros` should be one of `ignore`, `warn`, `raise`, but {errors} is specified.",
             stacklevel=2,
         )
     if font_name not in get_args(FontStyles) and not check_font_exists(font_name):
         if errors == "warn":
             warnings.warn(
-                f"font `{font_name}` cannot be detected by matplotlib.font_manager"
+                f"Font `{font_name}` cannot be detected by matplotlib.font_manager",
+                stacklevel=2,
             )
         elif errors == "raise":
             raise ValueError(
-                f"font `{font_name}` cannot be detected by matplotlib.font_manager"
+                f"Font `{font_name}` cannot be detected by matplotlib.font_manager"
             )
+        elif errors == "fallback":
+            warnings.warn(
+                f"Font `{font_name}` cannot be detected by matplotlib.font_manager. `sans-serif` used instead.",
+                stacklevel=2,
+            )
+            font_name = "sans-serif"
         else:
             pass
 
