@@ -65,3 +65,12 @@ def get_top_matched_font_name(font_families: List[str]) -> str:
     if picked_font == "":
         warnings.warn("no available font!", stacklevel=2)
     return picked_font
+
+
+def check_font_exists(font_name: str) -> bool:
+    """
+    check if specified font name is found in matplotlib ttf list.
+    """
+    flist = font_manager.fontManager.ttflist
+    detected = [(fe.name, fe.fname) for fe in flist if fe.name == font_name]
+    return len(detected) > 0
