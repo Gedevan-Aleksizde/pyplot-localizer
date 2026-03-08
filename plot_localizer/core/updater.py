@@ -1,17 +1,19 @@
 #! /usr/bin/env python3
 
+import warnings
 from os import environ
-from typing import Optional, get_args
+from typing import Literal, Optional, get_args
 
 import matplotlib
 from matplotlib import rcParams
 
-from .search import detect_font_preset, get_top_matched_font_name
+from .search import check_font_exists, detect_font_preset, get_top_matched_font_name
 from .typing import FontStyles
 
 
 def update_mpl_fontfamily(
     font_style: Optional[str] = None,
+    errors: Literal["ignore", "warn", "raise"] = "warn",
 ) -> str:
     """
     change matplotlib font family to the operating system specific one.
@@ -30,6 +32,22 @@ def update_mpl_fontfamily(
         environ.get("PYTHONFONT", "sans-serif") if font_style is None else font_style
     )
     del font_style
+    if errors not in ["ignore", "warn", "raise"]:
+        warnings.warn(
+            f"argument `erros` should be one of `ignore`, `warn`, `raise`, but {errors} is specified.",
+            stacklevel=2,
+        )
+    if font_name not in get_args(FontStyles) and not check_font_exists(font_name):
+        if errors == "warn":
+            warnings.warn(
+                f"font `{font_name}` cannot be detected by matplotlib.font_manager"
+            )
+        elif errors == "raise":
+            raise ValueError(
+                f"font `{font_name}` cannot be detected by matplotlib.font_manager"
+            )
+        else:
+            pass
 
     font_preset = detect_font_preset()
     rcParams.update(matplotlib.rcParamsDefault)
