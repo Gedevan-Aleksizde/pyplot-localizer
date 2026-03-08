@@ -13,7 +13,7 @@ from .typing import FontStyles
 
 def update_mpl_fontfamily(
     font_style: Optional[str] = None,
-    errors: Literal["ignore", "warn", "raise", "fallback"] = "warn",
+    errors: Literal["ignore", "warn", "raise", "fallback"] = "fallback",
 ) -> str:
     """
     change matplotlib font family to the operating system specific one.
