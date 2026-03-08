@@ -1,17 +1,12 @@
 import inspect
 import warnings
-from os import environ
-from typing import Optional, get_args
+from typing import Optional
 
 from packaging.version import Version
 
-from .core.typing import FontStyles
 from .core.updater import update_mpl_fontfamily
 
-style = environ.get("PYTHONFONTSTYLE", "sans-serif")
-if style not in get_args(FontStyles):
-    style = "sans-serif"
-FONT_FAMILY_P9 = update_mpl_fontfamily(style)
+FONT_FAMILY_P9 = update_mpl_fontfamily()
 
 try:
     import plotnine
