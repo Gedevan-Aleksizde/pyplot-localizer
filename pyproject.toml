@@ -3,7 +3,7 @@ name = "plot-localizer"
 authors=[
   {name='Katagiri, Satoshi', email='katagiri.stsh@gmail.com'}
 ]
-version = "0.10.1"
+version = "0.10.2"
 description = "Japanese font presets to enhance Python grapphic modules/Pythonグラフィックスモジュールの改善のための日本語ユーザー向けプリセット"
 readme = "README.md"
 requires-python = ">=3.13"
