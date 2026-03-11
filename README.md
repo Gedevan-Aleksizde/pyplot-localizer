@@ -164,6 +164,25 @@ PYTHONFONT="Hiragino Mincho ProN" python hogehoge
 
 ## トラブルシュート
 
+### matplotlib のバージョン
+
+uvでインストールした際に以下に類似したエラーが発生するなら、matplotlib のバージョンが古いのが原因です。 matplotlib を更新してください。
+
+```
+  × No solution found when resolving dependencies:
+  ╰─▶ Because only plot-localizer==X.X.X is available and plot-localizer==X.X.X depends on matplotlib>=X.X.X, we can conclude that all versions of
+      plot-localizer depend on matplotlib>=X.X.X.
+```
+
+```
+uv add matplotlib
+uv add "plot-localizer @ git+https://github.com/Gedevan-Aleksizde/pyplot-localizer"
+```
+
+よっぽど古いバージョンでなければだいたい動くと思うので、 matplotlib のバージョン依存は無視しても問題は発生しないかもしれません。
+
+### 依存ライブラリの不足
+
 使用時に以下のようなエラーが発生する場合は, 描画に必要なパッケージが不足しています.
 
 ```
